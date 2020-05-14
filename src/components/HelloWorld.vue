@@ -16,7 +16,14 @@
         </h1>
 
         <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
+          <span>For help and collaboration with other </span>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <a v-on="tooltip(on)">Vuetify</a>
+            </template>
+            <span>Vuetify is awesome</span>
+          </v-tooltip>
+          <span> developers,</span>
           <br>please join our online
           <a
             href="https://community.vuetifyjs.com"
@@ -149,5 +156,21 @@
         },
       ],
     }),
+
+    methods: {
+      tooltip(on: any) {
+        return Object.keys(on)
+            .reduce((handlers: any, key) => {
+                handlers[key] = function() {
+                  console.log(`Event: ${key}: ${JSON.stringify(arguments)}`);
+
+                  return on[key].apply(null, arguments);
+                };
+
+                return handlers;
+            },
+            {});
+      }
+    }
   })
 </script>
